@@ -20,6 +20,7 @@ class fire{
         this.camera.lookAt(0, 0, 0);
 
         this.scene = new FireScene(this);
+        //this.scene = new AtomicBomb(this);
 
         this.animate();
     }
@@ -66,16 +67,17 @@ class FireScene {
             sound.setBuffer(buffer);
             sound.setLoop(true);
             sound.setVolume(0.5);
-             setTimeout(() => {
+
             const resumeAudio = () => {
-        if (listener.context.state === 'suspended') {
-            listener.context.resume();
-        }
-        sound.play();
-        window.removeEventListener('click', resumeAudio);
-    };
-    window.addEventListener('click', resumeAudio);
-            }, 3000); // 3000 ms = 3 seconds delay
+                if (listener.context.state === 'suspended') {
+                    listener.context.resume();
+                }
+                sound.play();
+                document.body.removeEventListener('click', resumeAudio);
+                document.body.removeEventListener('touchend', resumeAudio);
+                };
+            document.body.addEventListener('click', resumeAudio);
+            document.body.addEventListener('touchend', resumeAudio);
         });
         this.scene.add(sound);
     }
@@ -348,5 +350,22 @@ class FireScene {
 
 
 }
+
+class AtomicBomb {
+    constructor(somethis) {
+        console.log('Atomic bomb class called');
+        this.scene = new THREE.Scene();
+    }
+    
+    update() {
+    //this.controls.update();
+    console.log('Update has been called');
+
+
+    }
+
+}
+
+
 const fireInstance = new fire();
 
